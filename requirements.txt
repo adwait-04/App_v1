@@ -1,0 +1,4 @@
+streamlit>=1.31
+numpy>=1.23
+pandas>=1.5
+pymavlink>=2.4.39
