@@ -23,7 +23,7 @@ with col1:
     st.write("Drone flight performance scoring and optimal flight identification")
 
     st.page_link(
-        "1_FlightScore",
+        "pages/1_FlightScore.py",
         label="Open FlightScore",
         icon="✈️"
     )
@@ -34,7 +34,7 @@ with col2:
     st.write("Post-flight degradation and performance drift monitoring")
 
     st.page_link(
-        "FlightDegrade",
+        "pages/FlightDegrade.py",
         label="Open FlightDegrade",
         icon="📉"
     )
@@ -45,7 +45,7 @@ st.markdown("---")
 st.markdown("### 🎯 MissionFeas")
 st.write("Mission feasibility and payload recommendation")
 
-st.button("Coming Soon", disabled=True, key="mission_soon")
+st.button("Coming Soon", disabled=True)
 
 st.divider()
 st.caption("Drone Health Analytics")
