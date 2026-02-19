@@ -51,7 +51,7 @@ if st.session_state.module == "flightscore":
         if c3.button("Details", key=f["name"]):
             st.session_state.selected_flight = f
         if "selected_flight" in st.session_state:
-        sel = st.session_state.selected_flight
+            sel = st.session_state.selected_flight
     
         st.divider()
         st.subheader(f"Flight Details — {sel['name']}")
@@ -123,6 +123,7 @@ with col2:
 
 st.divider()
 st.caption("Drone Health Analytics")
+
 
 
 
