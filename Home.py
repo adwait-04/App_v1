@@ -6,20 +6,12 @@ Created on Wed Feb 18 11:08:13 2026
 """
 import streamlit as st
 
-# ---------- ROUTER ----------
-page = st.query_params.get("page")
+st.title("Drone Health App")
 
-if page == "flightscore":
-    st.switch_page("pages/1_FlightScore.py")
+st.write("Select a module:")
 
-if page == "degrade":
-    st.switch_page("pages/FlightDegrade.py")
-
-st.set_page_config(
-    page_title="Drone Health Analytics",
-    page_icon="🚁",
-    layout="wide"
-)
+st.page_link("pages/1_FlightScore.py", label="Flight Score", icon="✈️")
+st.page_link("pages/FlightDegrade.py", label="Flight Degrade", icon="📉")
 
 # ---------- HEADER ----------
 col_logo, col_title = st.columns([1, 4])
@@ -68,3 +60,4 @@ st.button("Coming Soon", disabled=True, key="mission_soon")
 st.divider()
 
 st.caption("Drone Health Analytics")
+
