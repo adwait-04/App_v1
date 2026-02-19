@@ -44,11 +44,36 @@ if st.session_state.module == "flightscore":
 
     for i, f in enumerate(flights, 1):
         c1, c2, c3 = st.columns([4,1,1])
-
+    
         c1.write(f"**{i}. {f['name']}**")
         c2.metric("Score", f"{f['score']:.1f}")
+    
+        if c3.button("Details", key=f["name"]):
+            st.session_state.selected_flight = f
+    if "selected_flight" in st.session_state:
+    sel = st.session_state.selected_flight
 
-    st.stop()
+    st.divider()
+    st.subheader(f"Flight Details — {sel['name']}")
+
+    metrics = compute_flight_metrics(sel["path"])
+
+    colA, colB, colC = st.columns(3)
+
+    with colA:
+        st.metric("Stability", f"{metrics['stability']:.1f}")
+        st.metric("Control", f"{metrics['control']:.1f}")
+        st.metric("Efficiency", f"{metrics['efficiency']:.1f}")
+
+    with colB:
+        st.metric("Smoothness", f"{metrics['smoothness']:.1f}")
+        st.metric("Electrical", f"{metrics['electrical']:.1f}")
+        st.metric("Energy", f"{metrics['energy']:.1f}")
+
+    with colC:
+        st.metric("Endurance", f"{metrics['endurance']:.1f}")
+        st.metric("Hover Throttle", f"{metrics['hover_throttle']:.2f}")
+        st.metric("Final Score", f"{metrics['final']:.1f}")
 
 # =========================================================
 # FLIGHT DEGRADE MODULE
@@ -98,3 +123,4 @@ with col2:
 
 st.divider()
 st.caption("Drone Health Analytics")
+
