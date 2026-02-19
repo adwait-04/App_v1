@@ -12,50 +12,37 @@ if "selected_log" not in st.session_state:
 # =========================================================
 # DETAILS VIEW
 # =========================================================
-if st.session_state.selected_log:
+# ---------- DETAILS PANEL ----------
+if "selected_flight" in st.session_state:
+    sel = st.session_state.selected_flight
+    metrics = compute_flight_metrics(sel["path"])
 
-    st.title("✈️ Flight Health Details")
+    import os
+    st.divider()
+    st.subheader(f"Flight Details — {os.path.basename(sel['path'])}")
 
-    if st.button("⬅ Back to Ranking"):
-        st.session_state.selected_log = None
-        st.rerun()
+    col1, col2, col3 = st.columns(3)
 
-    metrics = compute_flight_metrics(st.session_state.selected_log)
+    with col1:
+        st.markdown("**Battery**")
+        st.metric("Avg Voltage", f"{metrics['avg_voltage']:.2f}" if metrics["avg_voltage"] else "N/A")
+        st.metric("Min Voltage", f"{metrics['min_voltage']:.2f}" if metrics["min_voltage"] else "N/A")
+        st.metric("Health %", f"{metrics['battery_health']:.1f}" if metrics["battery_health"] else "N/A")
 
-    score = metrics["flight_score"]
-    st.metric("Flight Score", f"{score:.1f}/100")
+    with col2:
+        st.markdown("**Vibration**")
+        st.metric("Max", f"{metrics['max_vibe']:.2f}" if metrics["max_vibe"] else "N/A")
+        st.metric("RMS", f"{metrics['rms_vibe']:.2f}" if metrics["rms_vibe"] else "N/A")
+        st.metric("Severity", metrics["vibe_severity"])
 
-    st.subheader("Battery")
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Avg V", f"{metrics['avg_voltage']:.2f}" if metrics["avg_voltage"] else "N/A")
-    c2.metric("Min V", f"{metrics['min_voltage']:.2f}" if metrics["min_voltage"] else "N/A")
-    c3.metric("Health %", f"{metrics['battery_health']:.1f}" if metrics["battery_health"] else "N/A")
+    with col3:
+        st.markdown("**Control & Stability**")
+        st.metric("Roll Var", f"{metrics['roll_var']:.3f}" if metrics["roll_var"] else "N/A")
+        st.metric("Pitch Var", f"{metrics['pitch_var']:.3f}" if metrics["pitch_var"] else "N/A")
+        st.metric("Hover Thr", f"{metrics['hover_throttle']:.2f}" if metrics["hover_throttle"] else "N/A")
 
-    st.subheader("Vibration")
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Max", f"{metrics['max_vibe']:.2f}" if metrics["max_vibe"] else "N/A")
-    c2.metric("RMS", f"{metrics['rms_vibe']:.2f}" if metrics["rms_vibe"] else "N/A")
-    c3.metric("Severity", metrics["vibe_severity"])
-
-    st.subheader("Stability")
-    c1, c2 = st.columns(2)
-    c1.metric("Roll Var", f"{metrics['roll_var']:.3f}" if metrics["roll_var"] else "N/A")
-    c2.metric("Pitch Var", f"{metrics['pitch_var']:.3f}" if metrics["pitch_var"] else "N/A")
-
-    st.subheader("Control")
-    c1, c2, c3 = st.columns(3)
-    c1.metric("Avg Thr", f"{metrics['avg_throttle']:.2f}" if metrics["avg_throttle"] else "N/A")
-    c2.metric("Peak Thr", f"{metrics['peak_throttle']:.2f}" if metrics["peak_throttle"] else "N/A")
-    c3.metric("Sat %", f"{metrics['motor_sat_pct']:.1f}" if metrics["motor_sat_pct"] else "N/A")
-
-    st.subheader("Electrical")
-    st.metric("Vcc Std", f"{metrics['vcc_std']:.3f}" if metrics["vcc_std"] else "N/A")
-
-    st.subheader("Energy")
-    st.metric("Volt Drop", f"{metrics['volt_drop']:.2f}" if metrics["volt_drop"] else "N/A")
-
-    st.stop()
-
+    st.divider()
+    st.metric("Flight Score", f"{metrics['flight_score']:.1f}")
 
 # =========================================================
 # RANKING VIEW
