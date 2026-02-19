@@ -1,4 +1,5 @@
 import streamlit as st
+import os
 
 st.set_page_config(layout="wide")
 
@@ -54,7 +55,7 @@ if st.session_state.module == "flightscore":
             sel = st.session_state.selected_flight
     
         st.divider()
-        st.subheader(f"Flight Details — {sel['name']}")
+        st.subheader(f"Flight Details — {os.path.basename(sel['path'])}")
     
         metrics = compute_flight_metrics(sel["path"])
     
@@ -123,6 +124,7 @@ with col2:
 
 st.divider()
 st.caption("Drone Health Analytics")
+
 
 
 
